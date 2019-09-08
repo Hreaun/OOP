@@ -21,7 +21,7 @@ public:
     if (!currentStr[0])
       return;
     table::wordCounter++;
-    if (!table::word.count(currentStr)) { // not found
+    if (!table::word.count(currentStr)) { 
       table::word.insert(make_pair(currentStr, 1));
       currentStr = {};
     } else {
