@@ -6,22 +6,32 @@
 
 using namespace std;
 class table {
-public:
+private:
   double wordCounter;
   string currentStr;
+  map<string, int> word;
 
+public:
   table() {
     wordCounter = 0;
     currentStr = {};
   }
 
-  map<string, int> word;
+  double getWordCounter() { return wordCounter; }
+
+  auto getMapBegin() { return word.begin(); }
+
+  auto getMapEnd() { return word.end(); }
+
+  void eraseStr() { currentStr = {}; }
+
+  void addSimbol(char c) { currentStr += c; }
 
   void wordHandler() {
     if (!currentStr[0])
       return;
     table::wordCounter++;
-    if (!table::word.count(currentStr)) { 
+    if (!table::word.count(currentStr)) {
       table::word.insert(make_pair(currentStr, 1));
       currentStr = {};
     } else {
