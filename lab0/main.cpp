@@ -17,10 +17,10 @@ int main(int argc, char **argv) {
   string inStr;
 
   while (getline(in, inStr)) {
-    table.currentStr = {};
+    table.eraseStr();
     for (char &c : inStr) {
       if (isalpha(c) || (isdigit(c)))
-        table.currentStr += c;
+        table.addSimbol(c);
       else {
         table.wordHandler();
       }
@@ -35,12 +35,12 @@ int main(int argc, char **argv) {
     return elem1.second >= elem2.second;
   };
 
-  set<pair<string, int>, Comparator> setOfWords(table.word.begin(),
-                                                table.word.end(), compFunctor);
+  set<pair<string, int>, Comparator> setOfWords(table.getMapBegin(),
+                                                table.getMapEnd(), compFunctor);
 
   for (const pair<string, int> &element : setOfWords)
     out << element.first << "," << element.second << "," << setprecision(3)
-        << element.second / table.wordCounter * 100 << "%" << endl;
+        << element.second / table.getWordCounter() * 100 << "%" << endl;
 
   in.close();
   out.close();
