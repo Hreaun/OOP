@@ -6,6 +6,7 @@
 #include <list>
 #include <map>
 #include <string>
+#include <cctype>
 
 using namespace std;
 class table {
@@ -46,6 +47,7 @@ public:
   void wordHandler() {
     if (!currentStr[0])
       return;
+    currentStr[0] = toupper(currentStr[0]);
     wordCounter++;
     if (!word.count(currentStr)) {
       word.insert(make_pair(currentStr, 1));
