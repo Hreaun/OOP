@@ -7,9 +7,7 @@ tritset::tritset(size_t size) {
 }
 
 tritset::reference tritset::operator[](size_t position) {
-  if (position >= sizeInTrits)
-    return tritset::reference(position);
-  return tritset::reference(container[position / 4], position % 4);
+  return tritset::reference(*this, position);
 }
 
 trit tritset::operator[](size_t position) const {
@@ -19,12 +17,8 @@ trit tritset::operator[](size_t position) const {
       >> (6 - 2 * (position % 4))); //доступ к (6 - 2 * position % 4)-му триту
 }
 
-tritset::reference::reference(unsigned char &oneChar, size_t position) : pos(position) {
-  pOneChar = &oneChar;
-}
-
-tritset::reference::reference(size_t pos) : pos(pos) {
-  pOneChar = nullptr;
+tritset::reference::reference(tritset &curTritset, size_t position) : pos(position) {
+  this->pTritset = &curTritset;
 }
 
 tritset::reference::operator trit() {
@@ -32,17 +26,21 @@ tritset::reference::operator trit() {
 }
 
 tritset::reference &tritset::reference::operator=(trit x) {
-  *pOneChar = (*pOneChar & ~(mask << (6 - 2 * (pos % 4))));
-  *pOneChar = *pOneChar | ((unsigned) x << (6 - 2 * (pos % 4)));
+  if (pTritset->sizeInTrits <= pos) {
+    if (x == trit::Unknown) {
+      return *this;
+    } else {
+      pTritset->sizeInChars = (pos % 4 == 0) ? pos / 4 : pos / 4 + 1;
+      pTritset->container.resize(pTritset->sizeInChars);
+      pTritset->sizeInTrits = pos + 1;
+    }
+  }
+  pTritset->container[pos / 4] = (pTritset->container[pos / 4] & ~(mask << (6 - 2 * (pos % 4))));
+  pTritset->container[pos / 4] = pTritset->container[pos / 4] | ((unsigned) x << (6 - 2 * (pos % 4)));
   return *this;
 }
 
 tritset::reference &tritset::reference::operator=(const tritset::reference reference) {
-  if (pOneChar == nullptr)
-    if ((reference.getTrit() == trit::True) || (reference.getTrit() == trit::False)){
-
-    }
-
   *this = reference.getTrit();
   return *this;
 }
@@ -60,24 +58,25 @@ std::istream &operator>>(std::istream &in, tritset::reference a) {
 }
 
 trit tritset::reference::getTrit() const {
-  if (pOneChar == nullptr)
+  if (pTritset->sizeInTrits <= pos)
     return trit::Unknown;
-  return (trit) ((*pOneChar & (tritset::mask << (6 - 2 * (pos % 4)))) >> (6 - 2 * (pos % 4)));
+  return (trit) ((pTritset->container[pos / 4] & (tritset::mask << (6 - 2 * (pos % 4))))
+      >> (6 - 2 * (pos % 4)));
 }
 
-tritset operator&(tritset& a, tritset&b){
+tritset operator&(tritset &a, tritset &b) {
   size_t size = (a.sizeInTrits >= b.sizeInTrits) ? a.sizeInTrits : b.sizeInTrits;
   tritset c(size);
-  for(size_t i = 0; i < size; ++i){
+  for (size_t i = 0; i < size; ++i) {
     c[i] = a[i] & b[i];
   }
   return c;
 }
 
-tritset operator|(tritset& a, tritset&b){
+tritset operator|(tritset &a, tritset &b) {
   size_t size = (a.sizeInTrits >= b.sizeInTrits) ? a.sizeInTrits : b.sizeInTrits;
   tritset c(size);
-  for(size_t i = 0; i < size; ++i){
+  for (size_t i = 0; i < size; ++i) {
     c[i] = a[i] | b[i];
   }
   return c;
