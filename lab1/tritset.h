@@ -18,19 +18,17 @@ class tritset {
   explicit tritset(size_t size);
 
   class reference {
-    explicit reference(size_t pos);
     friend class tritset;
     friend std::ostream &operator<<(std::ostream &out, tritset::reference a);
     friend std::istream &operator>>(std::istream &in, tritset::reference a);
 
-    unsigned char *pOneChar{};
-    std::vector<unsigned char> *pContainer{};
+    tritset* pTritset{};
     size_t pos{};
 
    protected:
     [[nodiscard]] trit getTrit() const;
    public:
-    reference(unsigned char &oneChar, size_t position);
+    reference(tritset &curTritset, size_t position);
 
     operator trit(); // приведение типа
     reference &operator=(trit x);
