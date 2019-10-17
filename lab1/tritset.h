@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <unordered_map>
+#include <iostream>
 #include "trit.h"
 
 class tritset {
