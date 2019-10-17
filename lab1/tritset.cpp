@@ -82,7 +82,73 @@ tritset operator|(tritset &a, tritset &b) {
   return c;
 }
 
+tritset operator~(const tritset &a) {
+  tritset c(a.sizeInTrits);
+  for (size_t i = 0; i < a.sizeInTrits; ++i) {
+    c[i] = ~a[i];
+  }
+  return c;
+}
+
 size_t tritset::getSize() {
   return this->sizeInTrits;
 }
 
+void tritset::shrink() {
+  size_t reduceTrits = 0;
+  for (size_t i = this->sizeInTrits; i > 0; --i) {
+    if ((*this)[i - 1] == trit::Unknown)
+      reduceTrits++;
+    else break;
+  }
+  this->sizeInChars -= reduceTrits / 4;
+  container.resize(this->sizeInChars);
+  this->sizeInTrits -= reduceTrits;
+}
+
+size_t tritset::cardinality(trit value) {
+  size_t counter = 0;
+  if (value != trit::Unknown) {
+    for (size_t i = 0; i < this->sizeInTrits; ++i) {
+      if ((*this)[i] == value)
+        counter++;
+    }
+  } else {
+    size_t unknownCount = 0;
+    for (size_t i = 0; i < this->sizeInTrits; ++i) {
+      if ((*this)[i] == value)
+        unknownCount++;
+      else {
+        counter += unknownCount;
+        unknownCount = 0;
+      }
+    }
+  }
+  return counter;
+}
+
+std::unordered_map<trit, int> tritset::cardinality() {
+  std::unordered_map<trit, int> result{
+      {trit::False, 0},
+      {trit::Unknown, 0},
+      {trit::True, 0},
+  };
+  result[trit::False] = this->cardinality(trit::False);
+  result[trit::True] = this->cardinality(trit::True);
+  result[trit::Unknown] = this->cardinality(trit::Unknown);
+  return result;
+}
+
+void tritset::trim(size_t lastIndex) {
+  for (size_t i = lastIndex; i < this->sizeInTrits; ++i) {
+    (*this)[i] = trit::Unknown;
+  }
+}
+
+size_t tritset::length() {
+  for (size_t i = this->sizeInTrits; i > 0; --i) {
+    if ((*this)[i - 1] != trit::Unknown)
+      return i;
+  }
+  return 0;
+}
