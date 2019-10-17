@@ -65,5 +65,3 @@ std::istream &operator>>(std::istream &in, trit &a) {
   }
   return in;
 }
-
-
