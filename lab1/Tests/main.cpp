@@ -1,6 +1,12 @@
 #include "tritset.h"
 #include <gtest/gtest.h>
 
+TEST(Exceptions, Exc){
+  ASSERT_THROW(tritset a(-12), std::invalid_argument);
+  tritset a(10);
+  ASSERT_THROW(a[-5], std::invalid_argument);
+}
+
 TEST(TritsetOp, OR){
   tritset a(5);
   a[0] = trit::True;
