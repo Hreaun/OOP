@@ -1,16 +1,23 @@
 #include "tritset.h"
+#include <stdexcept>
 
-tritset::tritset(size_t size) {
+tritset::tritset(int size) {
+  if (size < 0)
+    throw std::invalid_argument("Received negative size");
   sizeInTrits = size;
   sizeInChars = (size % 4 == 0) ? size / 4 : size / 4 + 1;
   container.resize(sizeInChars);
 }
 
-tritset::reference tritset::operator[](size_t position) {
+tritset::reference tritset::operator[](int position) {
+  if (position < 0)
+    throw std::invalid_argument("Received negative position");
   return tritset::reference(*this, position);
 }
 
-trit tritset::operator[](size_t position) const {
+trit tritset::operator[](int position) const {
+  if (position < 0)
+    throw std::invalid_argument("Received negative position");
   if (position >= sizeInTrits)
     return trit::Unknown;
   return (trit) ((container[position / 4] & (mask << (6 - 2 * (position % 4))))
