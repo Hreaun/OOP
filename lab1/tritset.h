@@ -14,7 +14,7 @@ class tritset {
   std::vector<unsigned char> container;
  public:
   tritset() { sizeInChars = 0; }
-  explicit tritset(size_t size);
+  explicit tritset(int size);
   class reference {
     friend class tritset;
     friend std::ostream &operator<<(std::ostream &out, tritset::reference a);
@@ -33,8 +33,8 @@ class tritset {
   friend tritset operator&(tritset &a, tritset &b);
   friend tritset operator|(tritset &a, tritset &b);
   friend tritset operator~(const tritset &a);
-  reference operator[](size_t position);
-  trit operator[](size_t position) const;
+  reference operator[](int position);
+  trit operator[](int position) const;
   size_t getSize();
   void shrink();
   size_t cardinality (trit value);
