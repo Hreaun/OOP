@@ -1,13 +1,13 @@
 #ifndef WORKFLOW__READFILE_H_
 #define WORKFLOW__READFILE_H_
 #include <iostream>
-#include "iWorker.h"
+#include "blockFactory.h"
 
 class readfile : public iWorker{
  public:
   static std::list <std::string> text;
  public:
-  void execute(std::list <std::string> arg) override{
+    void execute(std::list <std::string> arg) override{
     std::ifstream in;
     in.open(arg.back());
     std::string str;

@@ -2,6 +2,10 @@
 #include "blockFactory.h"
 #include "readfile.h"
 #include "writefile.h"
+#include "grep.h"
+#include "sort.h"
+#include "replace.h"
+#include "dump.h"
 
 parser::parser(std::ifstream &in) {
   std::string str;
@@ -39,6 +43,10 @@ void parser::commandExecuter() {
   blockFactory factory;
   factory.add<writefile>("writefile");
   factory.add<readfile>("readfile");
+  factory.add<grep>("grep");
+  factory.add<sort>("sort");
+  factory.add<replace>("replace");
+  factory.add<dump>("dump");
   for (auto const& k : sequence){
     iWorker *p = factory.create(scheme[k].front());
     p->execute(scheme[k]);
