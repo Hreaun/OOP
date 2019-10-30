@@ -1,6 +1,7 @@
 #ifndef WORKFLOW__IWORKER_H_
 #define WORKFLOW__IWORKER_H_
 #include "parser.h"
+#include <stdexcept>
 
 class iWorker {
  public:

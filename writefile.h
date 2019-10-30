@@ -5,11 +5,11 @@
 
 class writefile : public readfile {
  public:
-    void execute(std::list <std::string> arg) override{
+  void execute(std::list<std::string> arg) override {
     std::ofstream out;
     out.open(arg.back());
     std::string str;
-    for (std::string const& i : text) {
+    for (std::string const &i : text) {
       out << i;
       out << std::endl;
     }

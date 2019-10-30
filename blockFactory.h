@@ -31,8 +31,9 @@ class blockFactory {
 
   iWorker *create(const std::string &id) {
     auto it = factory.find(id);
-    if (it != factory.end())
+    if (it != factory.end()) {
       return it->second->create();
+    }
     return nullptr;
   }
 };

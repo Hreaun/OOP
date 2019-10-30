@@ -19,6 +19,9 @@ parser::parser(std::ifstream &in) {
     if (id == "csed") {
       break;
     }
+    if (!scheme[stoi(id)].empty()) {
+      throw std::logic_error("Found repeated command number");
+    }
     in >> str;
     if (str != "=")
       throw std::logic_error("Invalid format");
@@ -48,6 +51,10 @@ void parser::commandExecuter() {
   factory.add<replace>("replace");
   factory.add<dump>("dump");
   for (auto const& k : sequence){
+    if ((k != sequence.back()) & (scheme[k].front() == "writefile"))
+      throw std::logic_error("Wrong format");
+    if ((k == sequence.front()) & (scheme[k].front() != "readfile"))
+      throw std::logic_error("Wrong format");
     iWorker *p = factory.create(scheme[k].front());
     p->execute(scheme[k]);
   }
