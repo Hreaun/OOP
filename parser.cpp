@@ -56,5 +56,6 @@ void parser::commandExecuter() {
       throw std::logic_error("Wrong format");
     iWorker *p = factory.create(scheme[k].front());
     p->execute(scheme[k]);
+    delete p;
   }
 }
