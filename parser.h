@@ -9,11 +9,11 @@
 
 class parser {
  private:
-  void commandExecuter();
   std::map<int, std::list<std::string>> scheme;
   std::list<int> sequence;
 
  public:
+  void commandExecuter();
   explicit parser(std::ifstream &in);
 };
 

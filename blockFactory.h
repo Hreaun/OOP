@@ -15,8 +15,7 @@ class blockCreator : public iBlockCreator {
 
 class blockFactory {
  protected:
-  typedef std::map<std::string, iBlockCreator *> FactoryMap;
-  FactoryMap factory;
+  std::map<std::string, iBlockCreator *> factory;
 
  public:
   blockFactory() = default;

@@ -39,7 +39,6 @@ parser::parser(std::ifstream &in) {
       sequence.push_back(stoi(str));
     }
   } while (in.get() != '\n' && !in.eof());
-  commandExecuter();
 }
 
 void parser::commandExecuter() {
