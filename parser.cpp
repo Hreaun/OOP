@@ -11,7 +11,7 @@ parser::parser(std::ifstream &in) {
   std::string str;
   getline(in, str);
   if (str != "desc") {
-    throw std::logic_error("Invalid format");
+    throw std::logic_error("Invalid format.");
   }
   std::string id;
   while (!in.eof()) {
@@ -24,7 +24,7 @@ parser::parser(std::ifstream &in) {
     }
     in >> str;
     if (str != "=")
-      throw std::logic_error("Invalid format");
+      throw std::logic_error("Invalid format.\n Put \"=\" after a command number.");
     do {
       in >> str;
       scheme[stoi(id)].push_back(str);
@@ -51,9 +51,9 @@ void parser::commandExecuter() {
   factory.add<dump>("dump");
   for (auto const& k : sequence){
     if ((k != sequence.back()) & (scheme[k].front() == "writefile"))
-      throw std::logic_error("Wrong format");
+      throw std::logic_error("Wrong sequence format");
     if ((k == sequence.front()) & (scheme[k].front() != "readfile"))
-      throw std::logic_error("Wrong format");
+      throw std::logic_error("Wrong sequence format");
     iWorker *p = factory.create(scheme[k].front());
     p->execute(scheme[k]);
     delete p;
