@@ -8,12 +8,12 @@
 #include <fstream>
 
 class parser {
+  friend void commandExecuter();
  private:
   static std::map<int, std::list<std::string>> scheme;
   static std::list<int> sequence;
 
  public:
-  friend void commandExecuter();
   explicit parser(std::ifstream &in);
 };
 
