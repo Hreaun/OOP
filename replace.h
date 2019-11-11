@@ -21,4 +21,6 @@ class replace : public readfile{
   }
 };
 
+REGISTER_BLOCK(replace)
+
 #endif //WORKFLOW__REPLACE_H_

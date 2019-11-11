@@ -13,4 +13,6 @@ class sort : public readfile{
   }
 };
 
+REGISTER_BLOCK(sort)
+
 #endif //WORKFLOW__SORT_H_

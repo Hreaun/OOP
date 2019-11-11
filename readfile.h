@@ -2,6 +2,7 @@
 #define WORKFLOW__READFILE_H_
 #include <iostream>
 #include "blockFactory.h"
+#include "iWorker.h"
 
 class readfile : public iWorker{
  public:
@@ -16,6 +17,8 @@ class readfile : public iWorker{
     }
   }
 };
+
+REGISTER_BLOCK(readfile)
 
 std::list <std::string> readfile::text = {};
 

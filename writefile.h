@@ -8,7 +8,6 @@ class writefile : public readfile {
   void execute(std::list<std::string> arg) override {
     std::ofstream out;
     out.open(arg.back());
-    std::string str;
     for (std::string const &i : text) {
       out << i;
       out << std::endl;
@@ -16,5 +15,7 @@ class writefile : public readfile {
     out.close();
   }
 };
+
+REGISTER_BLOCK(writefile)
 
 #endif //WORKFLOW__WRITEFILE_H_

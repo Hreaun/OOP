@@ -1,8 +1,7 @@
 #ifndef WORKFLOW__IWORKER_H_
 #define WORKFLOW__IWORKER_H_
-#include "parser.h"
-#include <stdexcept>
 
+#include <list>
 class iWorker {
  public:
   virtual void execute(std::list <std::string> arg) = 0;

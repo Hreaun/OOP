@@ -14,4 +14,6 @@ class grep : public readfile{
   }
 };
 
+REGISTER_BLOCK(grep)
+
 #endif //WORKFLOW__GREP_H_

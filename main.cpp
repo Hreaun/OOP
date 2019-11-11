@@ -1,5 +1,5 @@
 #include <iostream>
-#include "parser.h"
+#include "commandExecuter.h"
 
 int main(int argc, char **argv) {
   std::ifstream in;
@@ -11,7 +11,7 @@ int main(int argc, char **argv) {
     std::cerr << "Cannot open the file\n";
   }
   parser a(in);
-  a.commandExecuter();
+  commandExecuter();
 
   return 0;
 }
