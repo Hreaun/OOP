@@ -9,6 +9,8 @@
 #include "sort.h"
 
 void commandExecuter() {
+  if (parser::scheme[parser::sequence.back()].front() != "writefile") // if last command != writefile
+    throw std::logic_error("Wrong sequence format");
   for (auto const &k : parser::sequence) {
     if ((k != parser::sequence.back()) & (parser::scheme[k].front() == "writefile"))
       throw std::logic_error("Wrong sequence format");
