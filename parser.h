@@ -8,17 +8,19 @@
 #include <fstream>
 
 class parser {
-  friend void commandExecuter();
  private:
-  static std::map<int, std::list<std::string>> scheme;
-  static std::list<int> sequence;
+  std::map<int, std::list<std::string>> scheme;
+  std::list<int> sequence;
 
  public:
   explicit parser(std::ifstream &in);
+  [[nodiscard]] const std::map<int, std::list<std::string>> &getScheme() const {
+    return scheme;
+  }
+  [[nodiscard]] const std::list<int> &getSequence() const {
+    return sequence;
+  }
 };
-
-std::map<int, std::list<std::string>> parser::scheme = {};
-std::list<int> parser::sequence = {};
 
 parser::parser(std::ifstream &in) {
   std::string str;

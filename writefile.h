@@ -1,11 +1,12 @@
 #ifndef WORKFLOW__WRITEFILE_H_
 #define WORKFLOW__WRITEFILE_H_
 
-#include "readfile.h"
-
-class writefile : public readfile {
+class writefile : public iWorker {
  public:
-  void execute(std::list<std::string> arg) override {
+  void execute(std::list<std::string> arg, std::list<std::string> &text) override {
+    if (arg.size() != 2) {
+      throw std::logic_error("writefile requires 1 argument.");
+    }
     std::ofstream out;
     out.open(arg.back());
     for (std::string const &i : text) {

@@ -1,9 +1,12 @@
 #ifndef WORKFLOW__SORT_H_
 #define WORKFLOW__SORT_H_
-#include "readfile.h"
-class sort : public readfile{
+
+class sort : public iWorker {
  public:
-  void execute(std::list<std::string> arg) override {
+  void execute(std::list<std::string> arg, std::list<std::string> &text) override {
+    if (arg.size() != 1) {
+      throw std::logic_error("sort doesn't require arguments.");
+    }
     for (auto i = text.begin(); i != text.end(); i++) {
      if (std::all_of(i->begin(), i->end(), isspace)){
        text.erase(i);

@@ -4,7 +4,7 @@
 #include "parser.h"
 #include "iWorker.h"
 
-#define REGISTER_BLOCK(T) static blockCreator<T> T(#T);
+#define REGISTER_BLOCK(T) blockCreator<T> T(#T);
 
 class iBlockCreator {
  public:

@@ -11,7 +11,8 @@ int main(int argc, char **argv) {
     std::cerr << "Cannot open the file\n";
   }
   parser a(in);
-  commandExecuter();
+  commandExecuter cmdExe;
+  cmdExe.exe(a.getScheme(), a.getSequence());
 
   return 0;
 }

@@ -1,10 +1,12 @@
 #ifndef WORKFLOW__REPLACE_H_
 #define WORKFLOW__REPLACE_H_
 
-#include "readfile.h"
-class replace : public readfile{
+class replace : public iWorker {
  public:
-  void execute(std::list<std::string> arg) override {
+  void execute(std::list<std::string> arg, std::list<std::string> &text) override {
+    if (arg.size() != 3) {
+      throw std::logic_error("replace requires 2 argument.");
+    }
     std::string secondWord = arg.back();
     arg.pop_back();
     std::string firstWord = arg.back();

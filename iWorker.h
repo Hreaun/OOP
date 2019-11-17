@@ -4,7 +4,7 @@
 #include <list>
 class iWorker {
  public:
-  virtual void execute(std::list <std::string> arg) = 0;
+  virtual void execute(std::list<std::string> arg, std::list<std::string> &text) = 0;
   iWorker() = default;
   virtual ~iWorker() = default;
 };
