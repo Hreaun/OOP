@@ -10,7 +10,9 @@ int main(int argc, char **argv) {
   catch (const std::ifstream::failure &ex) {
     std::cerr << "Cannot open the file\n";
   }
-  parser a(in);
+  parser a;
+  a.parse(in);
+
   commandExecuter cmdExe;
   cmdExe.exe(a.getScheme(), a.getSequence());
 

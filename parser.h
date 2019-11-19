@@ -6,14 +6,16 @@
 #include <stdexcept>
 #include <list>
 #include <fstream>
+#include "iParser.h"
 
-class parser {
+class parser : public iParser {
  private:
   std::map<int, std::list<std::string>> scheme;
   std::list<int> sequence;
 
  public:
-  explicit parser(std::ifstream &in);
+  void parse(std::ifstream &in) override;
+
   [[nodiscard]] const std::map<int, std::list<std::string>> &getScheme() const {
     return scheme;
   }
@@ -22,7 +24,7 @@ class parser {
   }
 };
 
-parser::parser(std::ifstream &in) {
+void parser::parse(std::ifstream &in) {
   std::string str;
   getline(in, str);
   if (str != "desc") {
