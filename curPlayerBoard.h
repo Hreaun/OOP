@@ -32,21 +32,21 @@ char symbolCase(iShip *curPoint, int x, int y){
 
 std::vector<std::string> curPlayerBoard::getBoard() {
   std::vector<std::string> board(12);
-  board[0] = "\t\tYOUR BOARD\n";
-  board[1] = "\t";
+  board[0] = "\t    YOUR BOARD\n";
+  board[1] = "   ";
   for (char i = 0; i < 10; ++i) {
     board[1] += ((char)('A' + i));
-    board[1] += "\t";
+    board[1] += "  ";
   }
   board[1]+= "\n";
 
   char c = 0;
   for (auto row = 0; row < 10; ++row) {
-    board[row + 2] += std::to_string(row) + "\t";
+    board[row + 2] += std::to_string(row) + "  ";
     for (auto col = 0; col < 10; ++col) {
       c = symbolCase(this->table[row][col], col, row);
       board[row + 2] += (char)c;
-      board[row + 2] += "\t";
+      board[row + 2] += "  ";
     }
     board[row + 2] += "\n";
   }

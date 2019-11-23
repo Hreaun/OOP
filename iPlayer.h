@@ -10,6 +10,7 @@ class iPlayer {
     ~iPlayer() = default;
     curPlayerBoard curPlBoard;
     enemyBoard enmBoard;
+    iShip* ships[10]{nullptr};
     int shipAmount{};
 
     virtual void play(iPlayer& enemy, std::string player) = 0;

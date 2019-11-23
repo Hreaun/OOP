@@ -11,12 +11,14 @@ class game {
 void game::start(iPlayer &first, iPlayer &second) {
   std::cout << "First player\n";
   first.shipSet();
+  std::system("clear");
   std::cout << "Second player\n";
   second.shipSet();
+  std::system("clear");
 
   while ((first.shipAmount != 0) && (second.shipAmount != 0)) {
-    first.play(second, "first");
-    second.play(first, "second");
+    first.play(second, "First");
+    second.play(first, "Second");
   }
   std::cout << "GG\n";
 }
