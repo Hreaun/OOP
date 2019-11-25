@@ -1,5 +1,6 @@
 #ifndef WORKFLOW__COMMANDEXECUTER_H_
 #define WORKFLOW__COMMANDEXECUTER_H_
+#include <memory>
 #include "blockFactory.h"
 #include "readfile.h"
 #include "writefile.h"
@@ -10,7 +11,7 @@
 
 class commandExecuter {
  public:
-  void exe(std::map<int, std::list<std::string>> scheme, std::list<int> sequence) {
+  static void exe(std::map<int, std::list<std::string>> scheme, std::list<int> sequence) {
     if (scheme[sequence.back()].front() != "writefile") // if last command != writefile
       throw std::logic_error("Wrong sequence format");
     std::list<std::string> text;
@@ -19,9 +20,8 @@ class commandExecuter {
         throw std::logic_error("Wrong sequence format");
       if ((k == sequence.front()) & (scheme[k].front() != "readfile"))
         throw std::logic_error("Wrong sequence format");
-      iWorker *p = blockFactory::instance().create(scheme[k].front());
+      std::unique_ptr<iWorker> p (blockFactory::instance().create(scheme[k].front()));
       p->execute(scheme[k], text);
-      delete p;
     }
   };
 };
