@@ -55,7 +55,7 @@ void parser::parse(std::ifstream &in) {
     if (str != "->") {
       sequence.push_back(stoi(str));
     }
-  } while (in.get() != '\n' && !in.eof());
+  } while (!in.eof() && in.get() != '\n');
 }
 
 #endif //WORKFLOW__PARSER_H_
