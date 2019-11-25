@@ -8,9 +8,13 @@ class grep : public iWorker {
       throw std::logic_error("grep requires 1 argument.");
     }
     std::string givenWord = arg.back();
-    for (auto it = text.begin(); it != text.end(); it++) {
-      if (it->find(givenWord) == std::string::npos){
-        text.erase(it);
+    auto it = text.begin();
+    auto last = it;
+    while(it != text.end()){
+      last = it;
+      it++;
+      if (last->find(givenWord) == std::string::npos) {
+        text.erase(last);
       }
     }
   }
