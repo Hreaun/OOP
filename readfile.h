@@ -19,8 +19,9 @@ class readfile : public iWorker {
     }
 
     std::string str;
-    while(!(getline(in, str)).eof()){
-        text.push_back(str);
+    while (!in.eof()) {
+      getline(in, str);
+      text.push_back(str);
     }
   }
 };
