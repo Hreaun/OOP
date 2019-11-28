@@ -5,12 +5,21 @@
 
 class dump : public iWorker {
  public:
-  void execute(std::list<std::string> arg, std::list<std::string> &text) override {
-    if (arg.size() != 2) {
-      throw std::logic_error("dump requires 1 argument.");
+    workerType getType() override {
+        return workerType::INOUT;
     }
-    class writefile a;
-    a.execute(arg, text);
+
+  void execute(std::list<std::string> arg, std::list<std::string> &text) override {
+      if (arg.size() != 2) {
+          throw std::logic_error("dump requires 1 argument.");
+      }
+      std::ofstream out;
+      out.open(arg.back());
+      for (std::string const &i : text) {
+          out << i;
+          out << std::endl;
+      }
+      out.close();
   }
 };
 
