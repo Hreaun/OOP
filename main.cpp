@@ -3,18 +3,16 @@
 
 int main(int argc, char **argv) {
   std::ifstream in;
-  in.exceptions(std::ifstream::failbit);
-  try {
     in.open(argv[1]);
-  }
-  catch (const std::ifstream::failure &ex) {
-    std::cerr << "Cannot open the file\n";
+  if(!in) {
+      std::cerr << "Cannot open the file\n";
+      return -1;
   }
   parser a;
   a.parse(in);
 
-  commandExecuter cmdExe;
-  cmdExe.exe(a.getScheme(), a.getSequence());
+  commandExecuter cmd;
+  cmd.exe(a.getScheme(), a.getSequence());
 
   return 0;
 }
