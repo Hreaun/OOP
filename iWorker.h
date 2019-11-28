@@ -2,10 +2,18 @@
 #define WORKFLOW__IWORKER_H_
 
 #include <list>
+
+enum class workerType {
+    IN,
+    OUT,
+    INOUT,
+};
+
 class iWorker {
  public:
   virtual void execute(std::list<std::string> arg, std::list<std::string> &text) = 0;
-  iWorker() = default;
+  virtual workerType getType() = 0;
+
   virtual ~iWorker() = default;
 };
 
