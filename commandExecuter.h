@@ -1,6 +1,7 @@
 #ifndef WORKFLOW__COMMANDEXECUTER_H_
 #define WORKFLOW__COMMANDEXECUTER_H_
 #include <memory>
+#include <vector>
 #include "blockFactory.h"
 #include "readfile.h"
 #include "writefile.h"
@@ -11,18 +12,30 @@
 
 class commandExecuter {
  public:
-  static void exe(std::map<int, std::list<std::string>> scheme, std::list<int> sequence) {
-    if (scheme[sequence.back()].front() != "writefile") // if last command != writefile
-      throw std::logic_error("Wrong sequence format");
+    void exe(std::map<int, std::list<std::string>> scheme, const std::list<int>& sequence) {
+      std::vector<std::shared_ptr<iWorker>> p;
+      for (auto const &k : sequence){
+          p.push_back(static_cast<const std::shared_ptr<iWorker>>(blockFactory::instance().create(scheme[k].front())));
+      }
+
+      for (auto i = 0; i < p.size(); ++i){
+          if ((i == 0) && (p[i]->getType() != workerType::IN)){
+              throw std::logic_error("Wrong sequence format");
+          }
+          if ((i > 0) && (i < p.size() - 1) && (p[i]->getType() != workerType::INOUT)){
+              throw std::logic_error("Wrong sequence format");
+          }
+          if ((i == p.size() - 1) && (p[i]->getType() != workerType::OUT)){
+              throw std::logic_error("Wrong sequence format");
+          }
+      }
+
     std::list<std::string> text;
-    for (auto const &k : sequence) {
-      if ((k != sequence.back()) & (scheme[k].front() == "writefile"))
-        throw std::logic_error("Wrong sequence format");
-      if ((k == sequence.front()) & (scheme[k].front() != "readfile"))
-        throw std::logic_error("Wrong sequence format");
-      std::unique_ptr<iWorker> p (blockFactory::instance().create(scheme[k].front()));
-      p->execute(scheme[k], text);
-    }
+      auto i = 0;
+      for (auto const &k : sequence){
+          p[i]->execute(scheme[k], text);
+          i++;
+      }
   };
 };
 
