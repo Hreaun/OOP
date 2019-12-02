@@ -1,6 +1,7 @@
 #ifndef THEGAME__HUMANPLAYER_H_
 #define THEGAME__HUMANPLAYER_H_
 
+#include <memory>
 #include "iPlayer.h"
 #pragma once
 class humanPlayer : public iPlayer {
@@ -9,53 +10,12 @@ class humanPlayer : public iPlayer {
   void play(iPlayer &enemy, std::string player) override;
   void deadLabel(iPlayer &enemy, int x, int y) override;
   void showBoards();
-  ~humanPlayer() {
-    for (auto &i : this->ships) {
-        delete i;
+  ~humanPlayer(){
+    for(auto &i : this->ships){
+      delete i;
     }
   }
 };
-
-void busy(bool (&allowed)[10][10], unsigned char orient, int x, int y, int size) { // пространство, занимаемое кораблем.
-  if (orient == 'V') {                                                             // площадь 3*(размер корабля + 2)
-    y++;                                                                           // вокруг него
-    x--;
-    for (auto i = 0; i < 3; ++i) {
-      for (auto j = size + 1; j >= 0; --j) {
-        if (((x + i) >= 0) && ((x + i) <= 9) && ((y - j) >= 0) && ((y - j) <= 9))
-          allowed[y - j][x + i] = false;
-      }
-    }
-  } else {
-    x--;
-    y++;
-    for (auto i = 0; i < size + 2; ++i) {
-      for (auto j = 2; j >= 0; --j) {
-        if (((x + i) >= 0) && ((x + i) <= 9) && ((y - j) >= 0) && ((y - j) <= 9))
-          allowed[y - j][x + i] = false;
-      }
-    }
-  }
-}
-
-bool enoughSpace(bool (&allowed)[10][10], unsigned char orient, int x, int y, int size) {
-  if (orient == 'V') {
-    if (((y + 1) - size) < 0)
-      return false;
-    for (auto j = size - 1; j >= 0; --j) {
-      if (!allowed[y - j][x])
-        return false;
-    }
-  } else {
-    if (((x - 1) + size) > 9)
-      return false;
-    for (auto i = 0; i < size; ++i) {
-      if (!allowed[y][x + i])
-        return false;
-    }
-  }
-  return true;
-}
 
 void humanPlayer::shipSet() {
   std::vector<std::string> board = this->curPlBoard.getBoard();
@@ -80,9 +40,9 @@ void humanPlayer::shipSet() {
   this->shipAmount = shipAmount;
 
   for (auto count = 0; count < shipAmount;) {
-    std::system("clear");
+    clearScreen();
     std::cout << "You have:\n";
-    for (auto i = 0; i < 4; ++i){
+    for (auto i = 0; i < 4; ++i) {
       std::cout << i + 1 << "-decker(s): " << shipCount[i] << std::endl;
     }
 
@@ -124,9 +84,9 @@ void humanPlayer::shipSet() {
     }
 
     std::cout << "Enter X coordinate of a ship (A - J)";
-    if ((size != 1) && (orientation == 'H')){
+    if ((size != 1) && (orientation == 'H')) {
       std::cout << "(Left coordinate of the ship): ";
-    }else { std::cout << ": "; }
+    } else { std::cout << ": "; }
     std::cin >> x;
     x = toupper(x);
     if ((x > 'J') || (x < 'A')) {
@@ -138,9 +98,9 @@ void humanPlayer::shipSet() {
     }
 
     std::cout << "Enter Y coordinate of a ship (0 - 9)";
-    if ((size != 1) && (orientation == 'V')){
+    if ((size != 1) && (orientation == 'V')) {
       std::cout << "(Bottom coordinate of the ship): ";
-    }else { std::cout << ": "; }
+    } else { std::cout << ": "; }
     std::cin >> y;
     if ((std::cin.fail()) || ((y > 9) || (y < 0))) {
       std::cin.clear();
@@ -153,12 +113,11 @@ void humanPlayer::shipSet() {
 
     if (enoughSpace(allowed, orientation, x - 'A', y, size)) {
       if (size == 1) {
-        this->curPlBoard.table[y][x - 'A'] = new ship(size, orientation, x - 'A', y);
-        this->ships[count] = this->curPlBoard.table[y][x - 'A'];
-      }
-      else {
-        this->curPlBoard.table[y][x - 'A'] = new ship(size, orientation, x - 'A', y);
-        this->ships[count] = this->curPlBoard.table[y][x - 'A'];
+        this->curPlBoard.table[y][x] = new ship(size, orientation, x, y);
+        this->ships[count] = this->curPlBoard.table[y][x];
+      } else {
+        this->curPlBoard.table[y][x] = new ship(size, orientation, x, y);
+        this->ships[count] = this->curPlBoard.table[y][x];
         if (orientation == 'V') {
           for (auto i = 1; i < size; ++i)
             this->curPlBoard.table[y - i][x - 'A'] = this->curPlBoard.table[y][x - 'A'];
@@ -179,7 +138,7 @@ void humanPlayer::shipSet() {
     ++count;
   }
 
-  std::system("clear");
+  clearScreen();
   board = this->curPlBoard.getBoard();
   for (auto &i : board) {
     std::cout << i;
@@ -219,10 +178,10 @@ void humanPlayer::play(iPlayer &enemy, std::string player) {
   std::cout << player << " player " << " turn\n";
   std::cout << "Press enter to continue.\n";
   getchar();
-  std::system("clear");
+  clearScreen();
 
   while (hit) {
-    std::system("clear");
+    clearScreen();
     std::cout << player << " player " << " turn\n";
     showBoards();
     if (enemy.shipAmount == 0) {
@@ -251,27 +210,26 @@ void humanPlayer::play(iPlayer &enemy, std::string player) {
       continue;
     }
 
-    if (enemy.curPlBoard.table[y][x - 'A'] == nullptr) {
+    if (this->enmBoard.table[y][x - 'A'] != '+') {
+      std::cout << "You already hit this point.\n";
+      std::cout << "Press enter to continue.\n";
+      getchar();
+      getchar();
+      continue;
+    } else if (enemy.curPlBoard.table[y][x - 'A'] == nullptr) {
       this->enmBoard.table[y][x - 'A'] = 'M';
       hit = false;
-      std::system("clear");
+      clearScreen();
       std::cout << "You missed.\n";
       getchar();
-    } else {
-      if ((this->enmBoard.table[y][x - 'A'] == 'H') || ((this->enmBoard.table[y][x - 'A'] == 'X'))){
-        std::cout << "You already hit this point.\n";
-        std::cout << "Press enter to continue.\n";
-        getchar();
-        getchar();
-        continue;
-      }
-      this->enmBoard.table[y][x - 'A'] = 'H';
-      enemy.curPlBoard.table[y][x - 'A']->damaged = true;
-      enemy.curPlBoard.table[y][x - 'A']->takeDamage(x - 'A', y);
-      if (enemy.curPlBoard.table[y][x - 'A']->isSunken()) {
-        enemy.shipAmount--;
-        deadLabel(enemy, x - 'A', y);
-      }
+      continue;
+    }
+    this->enmBoard.table[y][x - 'A'] = 'H';
+    enemy.curPlBoard.table[y][x - 'A']->damaged = true;
+    enemy.curPlBoard.table[y][x - 'A']->takeDamage(x - 'A', y);
+    if (enemy.curPlBoard.table[y][x - 'A']->isSunken()) {
+      enemy.shipAmount--;
+      deadLabel(enemy, x - 'A', y);
     }
   }
 }
