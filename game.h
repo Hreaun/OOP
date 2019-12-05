@@ -4,23 +4,26 @@
 #include "iPlayer.h"
 class game {
  public:
-  static void start(iPlayer &first, iPlayer &second);
+  static auto start(iPlayer &first, iPlayer &second) -> int;
 };
 
 
-void game::start(iPlayer &first, iPlayer &second) {
+auto game::start(iPlayer &first, iPlayer &second) -> int {
   std::cout << "First player\n";
   first.shipSet();
-  std::system("clear");
+  clearScreen();
   std::cout << "Second player\n";
   second.shipSet();
-  std::system("clear");
+  clearScreen();
 
   while ((first.shipAmount != 0) && (second.shipAmount != 0)) {
     first.play(second, "First");
     second.play(first, "Second");
   }
   std::cout << "GG\n";
+  std::cout << "Press enter to continue\n";
+  getchar();
+  return (first.shipAmount == 0) ? 1 : 0;
 }
 
 #endif //THEGAME__GAME_H_
