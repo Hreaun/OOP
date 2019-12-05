@@ -10,7 +10,7 @@ class humanPlayer : public iPlayer {
   void play(iPlayer &enemy, std::string player) override;
   void deadLabel(iPlayer &enemy, int x, int y) override;
   void showBoards();
-  ~humanPlayer(){
+  ~humanPlayer() override{
     for(auto &i : this->ships){
       delete i;
     }
@@ -113,11 +113,11 @@ void humanPlayer::shipSet() {
 
     if (enoughSpace(allowed, orientation, x - 'A', y, size)) {
       if (size == 1) {
-        this->curPlBoard.table[y][x] = new ship(size, orientation, x, y);
-        this->ships[count] = this->curPlBoard.table[y][x];
+        this->curPlBoard.table[y][x - 'A'] = new ship(size, orientation, x - 'A', y);
+        this->ships[count] = this->curPlBoard.table[y][x - 'A'];
       } else {
-        this->curPlBoard.table[y][x] = new ship(size, orientation, x, y);
-        this->ships[count] = this->curPlBoard.table[y][x];
+        this->curPlBoard.table[y][x - 'A'] = new ship(size, orientation, x - 'A', y);
+        this->ships[count] = this->curPlBoard.table[y][x - 'A'];
         if (orientation == 'V') {
           for (auto i = 1; i < size; ++i)
             this->curPlBoard.table[y - i][x - 'A'] = this->curPlBoard.table[y][x - 'A'];
