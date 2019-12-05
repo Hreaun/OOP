@@ -11,8 +11,8 @@ class iShip {
   friend class humanPlayer;
   friend class randomPlayer;
  public:
-  virtual bool isSunken() = 0;
-  virtual bool partDamaged(int x, int y) = 0;
+  virtual auto isSunken() -> bool = 0;
+  virtual auto partDamaged(int x, int y) -> bool = 0;
   virtual void takeDamage(int x, int y) = 0;
   iShip() = default;
   virtual ~iShip() = default;
@@ -26,8 +26,8 @@ class iShip {
 
 class ship : public iShip {
  public:
-  bool isSunken() override;
-  bool partDamaged(int x, int y) override;
+  auto isSunken() -> bool override;
+  auto partDamaged(int x, int y) -> bool override;
   void takeDamage(int x, int y) override;
   ship(int size, unsigned char orientation, int x, int y) {
     this->shipParts.assign(size, false);
@@ -37,7 +37,7 @@ class ship : public iShip {
   }
 };
 
-bool ship::partDamaged(int x, int y) {
+auto ship::partDamaged(int x, int y) -> bool {
   if (orientation == 'V') {
     if (shipParts[this->y - y])
       return true;
@@ -56,7 +56,7 @@ void ship::takeDamage(int x, int y) {
   }
 }
 
-bool ship::isSunken() {
+auto ship::isSunken() -> bool {
   int sunkCounter = 0;
   for (auto i : shipParts) {
     if (i == DAMAGED)
