@@ -6,10 +6,11 @@
 
 class curPlayerBoard : public iBoard {
   friend class humanPlayer;
+  friend class randomPlayer;
  protected:
   iShip *table[10][10]{};
  public:
-  std::vector<std::string> getBoard() override;
+  auto getBoard() -> std::vector<std::string> override;
   curPlayerBoard(){
     for (auto &row : this->table) {
       for (auto &col : row)
@@ -18,7 +19,7 @@ class curPlayerBoard : public iBoard {
   }
 };
 
-char symbolCase(iShip *curPoint, int x, int y){
+auto symbolCase(iShip *curPoint, int x, int y) -> char{
   if (curPoint == nullptr) return '*';
   if (curPoint->isSunken()){
     return 'X';
@@ -30,7 +31,7 @@ char symbolCase(iShip *curPoint, int x, int y){
 }
 
 
-std::vector<std::string> curPlayerBoard::getBoard() {
+auto curPlayerBoard::getBoard() -> std::vector<std::string> {
   std::vector<std::string> board(12);
   board[0] = "\t    YOUR BOARD\n";
   board[1] = "   ";
