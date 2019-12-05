@@ -3,12 +3,23 @@
 #include <string>
 #include "humanPlayer.h"
 #include "game.h"
+#include "randomPlayer.h"
 
 void helpMessage(){
   std::cout << "help" << std::endl;
 }
 
-int main(int argc, char**argv){
+auto getPlayer(const std::string& playerType) -> iPlayer*{
+  if (playerType == "random")
+    return new randomPlayer();
+  if (playerType == "human")
+    return new humanPlayer();
+  //if (playerType == "smart")
+    //return new randomPlayer;
+  return new randomPlayer();
+}
+
+auto main(int argc, char**argv) -> int{
   const struct option long_options[] = {{"help", 0, nullptr, 'h'},
                                         {"count", 1, nullptr, 'c'},
                                         {"first", 1, nullptr, 'f'},
@@ -47,9 +58,34 @@ int main(int argc, char**argv){
     }
   }
 
-  humanPlayer a;
-  humanPlayer b;
-  game::start(a, b);
+  if (((first != "human") && (first != "random")) || ((second != "human") && (second != "random"))){
+    std::cout << "Wrong player type.\n";
+    return -1;
+  }
+
+  int score[2] = {0};
+  for (auto k = 0; k < count; ++k) {
+    auto a = getPlayer(first);
+    auto b = getPlayer(second);
+    if (count > 1) {
+      std::cout << "SCORE: \n" << "First player: " << score[0];
+      std::cout << "   Second player: " << score[1] << std::endl;
+      std::cout << k + 1 << " game begins.\n";
+      std::cout << "Press enter to continue.\n";
+      getchar();
+    }
+    score[game::start(*a, *b)]++;
+    delete a;
+    delete b;
+  }
+  std::cout << "SCORE: \n" << "First player: " << score[0];
+  std::cout << "   Second player: " << score[1] << std::endl;
+
+  if (score[0] == score[1])
+    std::cout << "Draw!\n";
+  else
+    std::cout << ((score[1] > score[0]) ? "Second" : "First") << " player won the game!\n";
+
 
   return 0;
 }
