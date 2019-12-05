@@ -11,7 +11,7 @@ class randomPlayer : public iPlayer {
   void deadLabel(iPlayer &enemy, int x, int y) override;
   void shipSet() override;
  public:
-  ~randomPlayer(){
+  ~randomPlayer() override{
     for(auto &i : this->ships){
       delete i;
     }
