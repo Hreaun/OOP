@@ -6,7 +6,7 @@
 class enemyBoard : public iBoard {
  public:
   char table[10][10] = {};
-  std::vector<std::string> getBoard() override;
+  auto getBoard() -> std::vector<std::string> override;
   enemyBoard(){
     for (auto &row : this->table) {
       for (auto &col : row)
@@ -15,7 +15,7 @@ class enemyBoard : public iBoard {
   }
 };
 
-std::vector<std::string> enemyBoard::getBoard() {
+auto enemyBoard::getBoard() -> std::vector<std::string> {
   std::vector<std::string> board(12);
   board[0] = "\t    ENEMY'S BOARD\t\t\t";
   board[1] = "   ";
