@@ -7,12 +7,12 @@
 
 #pragma once
 class randomPlayer : public iPlayer {
-  void play(iPlayer& enemy, std::string player) override;
+  void play(iPlayer &enemy, std::string player) override;
   void deadLabel(iPlayer &enemy, int x, int y) override;
   void shipSet() override;
  public:
-  ~randomPlayer() override{
-    for(auto &i : this->ships){
+  ~randomPlayer() override {
+    for (auto &i : this->ships) {
       delete i;
     }
   }
@@ -34,8 +34,8 @@ void randomPlayer::shipSet() {
   std::random_device r;
   std::seed_seq seed{r(), r(), r(), r(), r(), r(), r(), r()};
   std::mt19937 eng{seed};
-  std::uniform_int_distribution<> dist(0,9);
-  std::uniform_int_distribution<> shipSize(1,4);
+  std::uniform_int_distribution<> dist(0, 9);
+  std::uniform_int_distribution<> shipSize(1, 4);
 
   bool allowed[10][10];
   for (auto &row : allowed) {
@@ -101,7 +101,7 @@ void randomPlayer::play(iPlayer &enemy, std::string player) {
   std::random_device r;
   std::seed_seq seed{r(), r(), r(), r(), r(), r(), r(), r()};
   std::mt19937 eng{seed};
-  std::uniform_int_distribution<> dist(0,9);
+  std::uniform_int_distribution<> dist(0, 9);
 
   if (this->shipAmount == 0)
     return;
@@ -119,23 +119,22 @@ void randomPlayer::play(iPlayer &enemy, std::string player) {
     x = dist(eng);
     y = dist(eng);
 
-    if (enemy.curPlBoard.table[y][x] == nullptr) {
+    if (this->enmBoard.table[y][x] != '+') {
+      continue;
+    } else if (enemy.curPlBoard.table[y][x] == nullptr) {
       this->enmBoard.table[y][x] = 'M';
       hit = false;
-    } else {
-      if (this->enmBoard.table[y][x] != '+') {
-        continue;
-      }
-      this->enmBoard.table[y][x] = 'H';
-      enemy.curPlBoard.table[y][x]->damaged = true;
-      enemy.curPlBoard.table[y][x]->takeDamage(x, y);
-      if (enemy.curPlBoard.table[y][x]->isSunken()) {
-        enemy.shipAmount--;
-        deadLabel(enemy, x, y);
-      }
+      continue;
+    }
+    this->enmBoard.table[y][x] = 'H';
+    enemy.curPlBoard.table[y][x]->damaged = true;
+    enemy.curPlBoard.table[y][x]->takeDamage(x, y);
+    if (enemy.curPlBoard.table[y][x]->isSunken()) {
+      enemy.shipAmount--;
+      deadLabel(enemy, x, y);
     }
   }
-
 }
+
 
 #endif //THEGAME__RANDOMPLAYER_H_
