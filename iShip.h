@@ -10,6 +10,7 @@
 class iShip {
   friend class humanPlayer;
   friend class randomPlayer;
+  friend class smartPlayer;
  public:
   virtual auto isSunken() -> bool = 0;
   virtual auto partDamaged(int x, int y) -> bool = 0;
