@@ -4,26 +4,34 @@
 #include "humanPlayer.h"
 #include "game.h"
 #include "randomPlayer.h"
+#include "smartPlayer.h"
 
-void helpMessage(){
-  std::cout << "help" << std::endl;
+void helpMessage() {
+  std::cout << "You are playing battleships" << std::endl;
+  std::cout << "You can use these parameters: " << std::endl;
+  std::cout << "-f [] or --first []  -  set first player [human, random, smart]" << std::endl;
+  std::cout << "-s [] or --second []  -  set second player [human, random, smart]" << std::endl;
+  std::cout << "-c [] or --count []  -  set amount of games [number]" << std::endl;
+  std::cout << "Table legend: " << std::endl;
+  std::cout << "S - ship\nH - hit\nX - sunken ship\nM - miss " << std::endl;
+  std::cout << "'+' or '*' - available points" << std::endl;
 }
 
-auto getPlayer(const std::string& playerType) -> iPlayer*{
+auto getPlayer(const std::string &playerType) -> iPlayer * {
   if (playerType == "random")
     return new randomPlayer();
   if (playerType == "human")
     return new humanPlayer();
-  //if (playerType == "smart")
-    //return new randomPlayer;
+  if (playerType == "smart")
+    return new smartPlayer;
   return new randomPlayer();
 }
 
-auto main(int argc, char**argv) -> int{
+auto main(int argc, char **argv) -> int {
   const struct option long_options[] = {{"help", 0, nullptr, 'h'},
-                                        {"count", 1, nullptr, 'c'},
-                                        {"first", 1, nullptr, 'f'},
-                                        {"second", 1, nullptr, 's'}};
+      {"count", 1, nullptr, 'c'},
+      {"first", 1, nullptr, 'f'},
+      {"second", 1, nullptr, 's'}};
   int rez = 0;
   int i = 0;
   int count = 1;
@@ -58,7 +66,8 @@ auto main(int argc, char**argv) -> int{
     }
   }
 
-  if (((first != "human") && (first != "random")) || ((second != "human") && (second != "random"))){
+  if (((first != "human") && (first != "random") && (first != "smart"))
+      || ((second != "human") && (second != "random") && (second != "smart"))) {
     std::cout << "Wrong player type.\n";
     return -1;
   }
@@ -85,7 +94,6 @@ auto main(int argc, char**argv) -> int{
     std::cout << "Draw!\n";
   else
     std::cout << ((score[1] > score[0]) ? "Second" : "First") << " player won the game!\n";
-
 
   return 0;
 }
