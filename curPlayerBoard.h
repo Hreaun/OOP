@@ -7,6 +7,7 @@
 class curPlayerBoard : public iBoard {
   friend class humanPlayer;
   friend class randomPlayer;
+  friend class smartPlayer;
  protected:
   iShip *table[10][10]{};
  public:
